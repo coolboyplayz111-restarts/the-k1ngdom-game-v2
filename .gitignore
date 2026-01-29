@@ -1,7 +1,8 @@
 node_modules/
-.DS_Store
-Thumbs.db
+npm-debug.log
+README.md
+package-lock.json
+.gitignore
+.git/
 *.log
-/dist/
-/build/
 .env
