@@ -1,0 +1,20 @@
+{
+  "name": "kingdom-furi-medieval-rpg",
+  "version": "1.0.0",
+  "description": "A browser-based 3D medieval RPG with realistic graphics and AI voice dialogue",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=8080 --host=0.0.0.0",
+    "dev": "live-server --port=8080 --host=0.0.0.0 --open=/index.html"
+  },
+  "keywords": ["rpg", "medieval", "threejs", "webgl", "game"],
+  "author": "Dawud",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.128.0",
+    "simplex-noise": "^2.4.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
