@@ -120,6 +120,10 @@ body {
     padding: 20px;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&display=swap');
+
+/* Add this font-family to your body in style.css */
+
 /* Quest marker */
 .quest-marker {
     position: absolute;
