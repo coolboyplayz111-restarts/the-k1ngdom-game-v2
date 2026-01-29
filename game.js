@@ -1,4 +1,4 @@
-// Kingdom Furi RPG - Enhanced Version
+// Kingdom Furi RPG - Render Optimized Version
 class KingdomFuriGame {
     constructor() {
         this.scene = null;
@@ -23,6 +23,7 @@ class KingdomFuriGame {
         
         this.keys = {};
         this.mouse = { x: 0, y: 0 };
+        this.assetsBaseUrl = '/assets/';
     }
 
     async initialize() {
@@ -167,12 +168,12 @@ class KingdomFuriGame {
         };
         
         const promises = [
-            loadModel('assets/models/buildings/kingdom-gate.glb', 'kingdomGate'),
-            loadModel('assets/models/buildings/medieval-house.glb', 'medievalHouse'),
-            loadModel('assets/models/environment/medieval-tree.glb', 'medievalTree'),
-            loadModel('assets/models/characters/villager.glb', 'villager'),
-            loadModel('assets/models/characters/merchant.glb', 'merchant'),
-            loadModel('assets/models/characters/guard.glb', 'guard')
+            loadModel(`${this.assetsBaseUrl}models/buildings/kingdom-gate.glb`, 'kingdomGate'),
+            loadModel(`${this.assetsBaseUrl}models/buildings/medieval-house.glb`, 'medievalHouse'),
+            loadModel(`${this.assetsBaseUrl}models/environment/medieval-tree.glb`, 'medievalTree'),
+            loadModel(`${this.assetsBaseUrl}models/characters/villager.glb`, 'villager'),
+            loadModel(`${this.assetsBaseUrl}models/characters/merchant.glb`, 'merchant'),
+            loadModel(`${this.assetsBaseUrl}models/characters/guard.glb`, 'guard')
         ];
         
         return Promise.all(promises).then(() => models);
@@ -189,14 +190,14 @@ class KingdomFuriGame {
         };
         
         const promises = [
-            loadTexture('assets/textures/environment/grass.jpg', 'grass'),
-            loadTexture('assets/textures/environment/dirt-path.jpg', 'dirtPath'),
-            loadTexture('assets/textures/environment/stone-wall.jpg', 'stoneWall'),
-            loadTexture('assets/textures/environment/roof-tiles.jpg', 'roofTiles'),
-            loadTexture('assets/textures/environment/wood-planks.jpg', 'woodPlanks'),
-            loadTexture('assets/textures/characters/villager-clothes.jpg', 'villagerClothes'),
-            loadTexture('assets/textures/characters/merchant-outfit.jpg', 'merchantOutfit'),
-            loadTexture('assets/textures/characters/guard-armor.jpg', 'guardArmor')
+            loadTexture(`${this.assetsBaseUrl}textures/environment/grass.jpg`, 'grass'),
+            loadTexture(`${this.assetsBaseUrl}textures/environment/dirt-path.jpg`, 'dirtPath'),
+            loadTexture(`${this.assetsBaseUrl}textures/environment/stone-wall.jpg`, 'stoneWall'),
+            loadTexture(`${this.assetsBaseUrl}textures/environment/roof-tiles.jpg`, 'roofTiles'),
+            loadTexture(`${this.assetsBaseUrl}textures/environment/wood-planks.jpg`, 'woodPlanks'),
+            loadTexture(`${this.assetsBaseUrl}textures/characters/villager-clothes.jpg`, 'villagerClothes'),
+            loadTexture(`${this.assetsBaseUrl}textures/characters/merchant-outfit.jpg`, 'merchantOutfit'),
+            loadTexture(`${this.assetsBaseUrl}textures/characters/guard-armor.jpg`, 'guardArmor')
         ];
         
         return Promise.all(promises).then(() => textures);
@@ -218,9 +219,9 @@ class KingdomFuriGame {
         };
         
         const promises = [
-            loadSound('assets/sounds/ambient/wind-trees.ogg', 'ambient'),
-            loadSound('assets/sounds/character/footsteps-grass.ogg', 'footsteps'),
-            loadSound('assets/sounds/combat/sword-swing.ogg', 'combat')
+            loadSound(`${this.assetsBaseUrl}sounds/ambient/wind-trees.ogg`, 'ambient'),
+            loadSound(`${this.assetsBaseUrl}sounds/character/footsteps-grass.ogg`, 'footsteps'),
+            loadSound(`${this.assetsBaseUrl}sounds/combat/sword-swing.ogg`, 'combat')
         ];
         
         return Promise.all(promises);
@@ -619,7 +620,7 @@ class KingdomFuriGame {
             });
         }
         
-        treeLoader.load('assets/models/environment/medieval-tree.glb', (gltf) => {
+        treeLoader.load(`${this.assetsBaseUrl}models/environment/medieval-tree.glb`, (gltf) => {
             const treeModel = gltf.scene.children[0];
             treeModel.castShadow = true;
             
