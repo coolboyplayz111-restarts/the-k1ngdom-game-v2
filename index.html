@@ -1,111 +1,68 @@
+index.html
+style.css
+main.js
+/assets/models/buildings/stone_house.glb
+/assets/models/buildings/gatehouse.glb
+/assets/models/buildings/library.glb
+/assets/models/buildings/player_house.glb
+/assets/models/props/barrel.glb
+/assets/models/nature/tree.glb
+/assets/models/characters/villager01.glb
+/assets/models/characters/merchant.glb
+/assets/models/characters/guard.glb
+/assets/textures/grass.jpg
+/assets/textures/dirt.jpg
+/assets/textures/path.jpg
+/assets/textures/stone.jpg
+Asset Notes
+Convert/download as .glb and place in the above folders.
+Buildings: use the polyscann house, create your own gate/library or convert from CC0 sources. Ensure they’re not single boxes: walls + roof + door + windows.
+Trees: pick any realistic medieval tree (trunk + leaves). Avoid cylinders/spheres; real model only.
+Characters: use the listed packs; make sure the face has no visible eyes; the code hides meshes with “eye” in their name.
+index.html
+Copy
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kingdom Furi - Medieval RPG</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Georgia', serif; 
-            overflow: hidden; 
-            background: linear-gradient(180deg, #87CEEB 0%, #98D8E8 50%, #191970 100%);
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-        }
-        #gameCanvas { display: block; width: 100vw; height: 100vh; }
-        #ui { position: absolute; top: 0; left: 0; right: 0; z-index: 100; }
-        .dialogue-box { 
-            position: absolute; bottom: 20px; left: 20px; right: 20px;
-            background: rgba(20, 20, 20, 0.9); border: 2px solid #8B4513;
-            padding: 15px; border-radius: 10px; color: #FFD700; display: none;
-            font-size: 18px; line-height: 1.4; z-index: 1000;
-        }
-        .button {
-            position: absolute; padding: 12px 24px; background: #8B4513;
-            color: #FFD700; border: 2px solid #A0522D; cursor: pointer;
-            font-size: 16px; border-radius: 5px; text-align: center;
-            text-transform: uppercase; letter-spacing: 1px;
-            transition: all 0.3s ease; z-index: 1000;
-        }
-        .button:hover { background: #A0522D; transform: translateY(-2px); }
-        #playBtn { top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        #settingsBtn { top: 20px; right: 20px; }
-        #tutorialBtn { top: 20px; left: 20px; }
-        #characterBtn { bottom: 20px; right: 20px; }
-        .health-bar {
-            position: absolute; top: 20px; left: 20px; width: 250px; height: 30px;
-            background: rgba(0,0,0,0.8); border: 3px solid #8B0000;
-            border-radius: 20px; box-shadow: 0 0 10px rgba(139,0,0,0.5); z-index: 100;
-        }
-        .health-fill { 
-            height: 100%; background: linear-gradient(90deg, #FF0000, #FF6347, #32CD31);
-            border-radius: 17px; transition: width 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
-        }
-        .gold-counter {
-            position: absolute; bottom: 20px; right: 20px; 
-            background: rgba(184,134,11,0.9); border: 2px solid #DAA520;
-            border-radius: 10px; padding: 10px 15px; color: #FFF;
-            font-weight: bold; font-size: 16px; z-index: 100;
-        }
-        .quest-log {
-            position: absolute; top: 20px; right: 20px; width: 300px;
-            max-height: 400px; background: rgba(20,20,20,0.9);
-            border: 2px solid #8B4513; border-radius: 10px;
-            padding: 15px; color: #FFD700; font-size: 14px;
-            overflow-y: auto; display: none; z-index: 100;
-        }
-        .dialogue-text {
-            font-size: 18px; color: #FFD700; text-shadow: 1px 1px 2px #000;
-            margin-bottom: 15px;
-        }
-        .dialogue-options {
-            display: flex; gap: 10px; flex-wrap: wrap;
-        }
-        .message {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.8); color: white; padding: 20px;
-            border-radius: 10px; z-index: 1000; font-size: 18px;
-        }
-        .loading-screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 2000;
-            color: #FFD700; font-size: 24px;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .fade-in { animation: fadeIn 0.5s; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Kingdom Furi - Medieval RPG</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <canvas id="gameCanvas"></canvas>
-    
-    <div id="ui">
-        <div id="mainMenu" class="fade-in">
-            <div id="playBtn" class="button" onclick="game.startGame()">Play</div>
-            <div id="tutorialBtn" class="button" onclick="game.startTutorial()">Tutorial</div>
-            <div id="settingsBtn" class="button" onclick="game.showSettings()">Settings</div>
-            <div id="characterBtn" class="button" onclick="game.customizeCharacter()">Customize</div>
-        </div>
-        
-        <div id="dialogueBox" class="dialogue-box"></div>
-        <div id="healthBar" class="health-bar">
-            <div class="health-label">Health</div>
-            <div id="healthFill" class="health-fill"></div>
-        </div>
-        <div id="goldCounter" class="gold-counter">Gold: 0</div>
-        <div id="questLog" class="quest-log"><h3>Quest Log</h3></div>
-    </div>
-    
-    <div id="loadingScreen" class="loading-screen">
-        <div>Loading Kingdom Furi...</div>
-        <div id="loadingProgress">0%</div>
+  <div id="ui">
+    <div id="main-menu" class="panel">
+      <h1>Kingdom Furi</h1>
+      <button data-action="play">Play</button>
+      <button data-action="tutorial">Tutorial</button>
+      <button data-action="customize">Customize Character</button>
+      <button data-action="settings">Settings</button>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simplex-noise@2.4.0/simplex-noise.min.js"></script>
-    <script src="/game.js"></script>
+    <div id="hud" class="panel hidden">
+      <div id="hud-top">
+        <div id="location">Location: Kingdom Gate</div>
+        <div id="hint">WASD: Move | Mouse: Look | E: Interact</div>
+      </div>
+      <div id="dialogue" class="hidden">
+        <div id="dialogue-name">Villager</div>
+        <div id="dialogue-text">...</div>
+      </div>
+    </div>
+
+    <div id="tutorial-box" class="panel hidden">
+      <h2>Tutorial</h2>
+      <p id="tutorial-text">Learn to move: press WASD.</p>
+    </div>
+  </div>
+
+  <canvas id="game"></canvas>
+
+  <!-- Three.js & helpers via CDN (ESM) -->
+  <script type="module" src="https://unpkg.com/three@0.160.1/build/three.module.js"></script>
+  <script type="module" src="https://unpkg.com/three@0.160.1/examples/jsm/loaders/GLTFLoader.js"></script>
+  <script type="module" src="https://unpkg.com/three@0.160.1/examples/jsm/loaders/DRACOLoader.js"></script>
+  <script type="module" src="https://unpkg.com/three@0.160.1/examples/jsm/objects/Sky.js"></script>
+  <script type="module" src="https://unpkg.com/three@0.160.1/examples/jsm/utils/BufferGeometryUtils.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
