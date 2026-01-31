@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "download": "bash download-assets.sh"
+    "download": "bash downloads-assets.sh"
   },
   "keywords": ["rpg", "medieval", "threejs", "webgl", "game"],
   "author": "Mr Dawud",
